@@ -6,7 +6,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 cd "${REPO_ROOT}"
 
 db_path="${POSTURE_DASHBOARD_DB:-/home/logan/posture/posture_history.sqlite3}"
-host="${POSTURE_DASHBOARD_HOST:-0.0.0.0}"
+host="${POSTURE_DASHBOARD_HOST:-::}"
 port="${POSTURE_DASHBOARD_PORT:-8787}"
 
 echo "[posture-dashboard] db=${db_path} host=${host} port=${port}"

@@ -7,6 +7,9 @@ This document holds the operational notes, bring-up details, and current pose-ca
 - `src/`: main runtime, IMU integration, OLED support, buzzer support
 - `jetson/camera/`: Jetson CAM1 IMX219 bring-up helper
 - `jetson/inference/`: live pose capture scripts for the Jetson CSI camera
+- `jetson/hardware/`: focused hardware test utilities
+- `jetson/services/`: systemd units and launch scripts
+- `jetson/web/`: posture history dashboard
 - `scripts/`: small bring-up helpers
 - `experiments/`: local experiments kept outside the main runtime path
 

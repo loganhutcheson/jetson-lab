@@ -111,7 +111,7 @@ Recommended settings:
 
 ```bash
 POSTURE_DASHBOARD_DB=/home/logan/posture/posture_history.sqlite3
-POSTURE_DASHBOARD_HOST=0.0.0.0
+POSTURE_DASHBOARD_HOST=::
 POSTURE_DASHBOARD_PORT=8787
 ```
 
@@ -132,6 +132,14 @@ Open the dashboard from another machine:
 
 ```bash
 http://jetson.local:8787/
+```
+
+If `jetson.local` is resolved over IPv6 by the Mac, keep `POSTURE_DASHBOARD_HOST=::` so the dashboard listens on both IPv6 and IPv4.
+
+From the Mac, you can also use the helper script in this repo. It tries the direct URL first, then falls back to an SSH tunnel on localhost:
+
+```bash
+./scripts/open_posture_dashboard.sh
 ```
 
 ## Developer Flow

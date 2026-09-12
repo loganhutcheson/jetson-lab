@@ -2,6 +2,7 @@
 import argparse
 import datetime as dt
 import json
+import socket
 import sqlite3
 import time
 from http import HTTPStatus
@@ -523,15 +524,37 @@ class DashboardHandler(BaseHTTPRequestHandler):
         print(f"[dashboard] {self.address_string()} - {format % args}")
 
 
+class DashboardHTTPServer(ThreadingHTTPServer):
+    address_family = socket.AF_INET
+
+    def server_bind(self) -> None:
+        if self.address_family == socket.AF_INET6 and socket.has_dualstack_ipv6():
+            try:
+                self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+            except OSError:
+                pass
+        super().server_bind()
+
+
+def create_server(host: str, port: int) -> ThreadingHTTPServer:
+    address_family = socket.AF_INET6 if ":" in host else socket.AF_INET
+    server_cls = type(
+        "ConfiguredDashboardHTTPServer",
+        (DashboardHTTPServer,),
+        {"address_family": address_family},
+    )
+    return server_cls((host, port), DashboardHandler)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--db", required=True)
-    parser.add_argument("--host", default="0.0.0.0")
+    parser.add_argument("--host", default="::")
     parser.add_argument("--port", type=int, default=8787)
     args = parser.parse_args()
 
     DashboardHandler.db_path = args.db
-    server = ThreadingHTTPServer((args.host, args.port), DashboardHandler)
+    server = create_server(args.host, args.port)
     print(f"[dashboard] serving db={args.db} on http://{args.host}:{args.port}")
     server.serve_forever()
 
