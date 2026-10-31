@@ -210,7 +210,7 @@ ffplay -fflags nobuffer -flags low_delay -framedrop 'udp://0.0.0.0:5008?listen=1
 Jetson sender:
 
 ```bash
-printf 'Lablab123\n' | sudo -S systemctl restart nvargus-daemon
+sudo systemctl restart nvargus-daemon
 gst-launch-1.0 -e nvarguscamerasrc sensor-id=0 ! 'video/x-raw(memory:NVMM),width=1920,height=1080,framerate=30/1,format=NV12' ! nvvidconv ! 'video/x-raw,format=I420,width=640,height=360' ! videorate ! 'video/x-raw,framerate=10/1' ! x264enc tune=zerolatency speed-preset=ultrafast bitrate=1000 key-int-max=10 byte-stream=true ! h264parse config-interval=1 ! mpegtsmux ! udpsink host=192.168.8.192 port=5008 sync=false async=false
 ```
 

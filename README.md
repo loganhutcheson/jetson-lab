@@ -1,18 +1,17 @@
-# Jetson Runtime
+# jetson posture system
 
-> **Status:** Retired for now. The working system and its setup notes are preserved here.
+camera and peripheral bring-up, C++20 sensor processing, and Python pose inference on Jetson Orin Nano. paused; code and setup notes are preserved.
 
-An NVIDIA Jetson Orin Nano project that grew from small publisher/subscriber experiments into a live posture system. It brings up two IMX219 CSI cameras, runs YOLO pose inference, classifies posture as `good`, `okay`, or `bad`, records history in SQLite, and serves a local dashboard. The hardware path also includes an MPU-6050, OLED status display, and buzzer.
+## highlights
 
-## Repository map
+- IMX219 CSI cameras via Argus/GStreamer; MPU-6050 IMU, I²C OLED, and GPIO buzzer.
+- concurrent C++ runtime with bounded queues and dropped-sample tracking.
+- Python posture classification, SQLite history, and systemd-managed services.
 
-- `src/` — C++ sensor runtime, messaging, and hardware output
-- `jetson/camera/` — CSI camera and device-tree bring-up
-- `jetson/inference/` — pose inference, feature extraction, and classifier training
-- `jetson/services/` — systemd units, launch scripts, and example configuration
-- `jetson/web/` — posture-history dashboard
-- `jetson/hardware/` — focused hardware test utilities
-- `experiments/` — early publisher/subscriber prototypes
-- `docs/` — setup and developer reference
+## start here
 
-Start with [`docs/POSTURE_SYSTEM_SETUP.md`](docs/POSTURE_SYSTEM_SETUP.md) to run the posture system. See [`docs/DEVELOPER_NOTES.md`](docs/DEVELOPER_NOTES.md) for camera bring-up, runtime configuration, and development notes.
+[setup](docs/POSTURE_SYSTEM_SETUP.md) · [hardware notes](docs/DEVELOPER_NOTES.md) · [project photos](https://loganhutcheson.com/2026/03/24/jetson-project-1.html)
+
+`src/` holds the C++ runtime; `jetson/` contains inference, services, and the dashboard. `experiments/` preserves early messaging prototypes.
+
+personal prototype: the C++ camera producer is simulated; real camera capture runs in Python.

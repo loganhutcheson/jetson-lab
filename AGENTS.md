@@ -52,7 +52,7 @@
 - A healthy pin-7 result looks like:
   - `line 144: "PAC.06" unused input active-high`
 - To confirm the pinmux is not still tristated:
-  - `printf 'Lablab123\n' | sudo -S sed -n '2178,2196p' /sys/kernel/debug/pinctrl/2430000.pinmux/pinconf-groups`
+  - `sudo sed -n '2178,2196p' /sys/kernel/debug/pinctrl/2430000.pinmux/pinconf-groups`
 - A broken pinmux state shows `tristate=1`; the fixed overlay should come back with `gpio-mode=1` and `tristate=0`.
 - On this Jetson, the overlay alone was not sufficient: after reboot the live PADCTL register at `0x2448030` still came up as `0x5a`, so board pin `7` stayed input + tristate.
 - The working runtime fix was a Jetson-local systemd unit that writes PADCTL `0x2448030 = 0x0a` at boot. Those host-local files are not in this repo:
@@ -61,7 +61,7 @@
 - The buzzer on pin `7` is active-low in this setup, so runtime env should include:
   - `JETSON_BUZZER_ACTIVE_LOW=1`
 - To verify the live PADCTL value on the Jetson:
-  - `printf 'Lablab123\n' | sudo -S python3 -c 'import mmap,os,struct; addr=0x2448030; page=addr & ~(mmap.PAGESIZE-1); off=addr-page; fd=os.open("/dev/mem", os.O_RDONLY|os.O_SYNC); mm=mmap.mmap(fd, mmap.PAGESIZE, mmap.MAP_SHARED, mmap.PROT_READ, offset=page); print(hex(struct.unpack("<I", mm[off:off+4])[0])); mm.close(); os.close(fd)'`
+  - `sudo python3 -c 'import mmap,os,struct; addr=0x2448030; page=addr & ~(mmap.PAGESIZE-1); off=addr-page; fd=os.open("/dev/mem", os.O_RDONLY|os.O_SYNC); mm=mmap.mmap(fd, mmap.PAGESIZE, mmap.MAP_SHARED, mmap.PROT_READ, offset=page); print(hex(struct.unpack("<I", mm[off:off+4])[0])); mm.close(); os.close(fd)'`
 - `0x5a` is the broken state; `0x0a` is the working state that allows `Jetson.GPIO` output on board pin `7`.
 
 ## OLED bring-up
