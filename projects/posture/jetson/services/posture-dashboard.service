@@ -5,10 +5,10 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=logan
-WorkingDirectory=/home/logan/jetson-runtime
+User=@SERVICE_USER@
+WorkingDirectory=@PROJECT_ROOT@
 EnvironmentFile=-/etc/default/posture-dashboard
-ExecStart=/home/logan/jetson-runtime/jetson/services/run_posture_dashboard.sh
+ExecStart=@PROJECT_ROOT@/jetson/services/run_posture_dashboard.sh
 Restart=always
 RestartSec=5
 StandardOutput=journal

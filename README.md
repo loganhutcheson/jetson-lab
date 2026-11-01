@@ -1,17 +1,20 @@
-# jetson posture system
+# jetson lab
 
-camera and peripheral bring-up, C++20 sensor processing, and Python pose inference on Jetson Orin Nano. paused; code and setup notes are preserved.
+small hardware and Linux projects on Jetson Orin Nano. paused for now; start with the [return checklist](docs/pick-up-here.md).
 
-## highlights
+| folder | what's here |
+| --- | --- |
+| [projects/posture](projects/posture/) | cameras, sensors, pose inference, and a local dashboard |
+| [experiments](experiments/) | early C++ messaging prototypes |
+| [docs](docs/) | lab layout and next steps |
 
-- IMX219 CSI cameras via Argus/GStreamer; MPU-6050 IMU, I²C OLED, and GPIO buzzer.
-- concurrent C++ runtime with bounded queues and dropped-sample tracking.
-- Python posture classification, SQLite history, and systemd-managed services.
+## build
 
-## start here
+```sh
+cmake -S . -B build
+cmake --build build
+```
 
-[setup](docs/POSTURE_SYSTEM_SETUP.md) · [hardware notes](docs/DEVELOPER_NOTES.md) · [project photos](https://loganhutcheson.com/2026/03/24/jetson-project-1.html)
+this builds the posture C++ runtime and OLED demo. real camera inference runs separately in Python on the Jetson; see the [project guide](projects/posture/README.md).
 
-`src/` holds the C++ runtime; `jetson/` contains inference, services, and the dashboard. `experiments/` preserves early messaging prototypes.
-
-personal prototype: the C++ camera producer is simulated; real camera capture runs in Python.
+new projects get their own folder under `projects/`. keep hardware setup and dependencies with each project; share code only when another project needs it.

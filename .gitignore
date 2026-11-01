@@ -3,3 +3,10 @@ experiments/observer/app
 __pycache__/
 *.pyc
 results_mac.csv
+
+**/build/
+*.sqlite3
+*.sqlite3-*
+*.pt
+*.onnx
+*.engine

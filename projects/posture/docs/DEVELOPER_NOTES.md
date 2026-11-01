@@ -11,7 +11,7 @@ This document holds the operational notes, bring-up details, and current pose-ca
 - `jetson/services/`: systemd units and launch scripts
 - `jetson/web/`: posture history dashboard
 - `scripts/`: small bring-up helpers
-- `experiments/`: local experiments kept outside the main runtime path
+- `../../experiments/`: local experiments kept at the repository root, outside the posture project
 
 ## Build
 

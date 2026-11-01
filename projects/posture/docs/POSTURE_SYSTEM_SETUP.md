@@ -47,7 +47,7 @@ cp /tmp/posture_classifier.json /home/logan/posture/posture_classifier.json
 From the repo on the Jetson:
 
 ```bash
-cd /home/logan/jetson-runtime
+cd /home/logan/jetson-lab/projects/posture
 ./jetson/services/install_posture_runtime_service.sh
 ```
 
@@ -97,7 +97,7 @@ journalctl -u posture-runtime.service -n 50 --no-pager
 Install:
 
 ```bash
-cd /home/logan/jetson-runtime
+cd /home/logan/jetson-lab/projects/posture
 ./jetson/services/install_posture_dashboard_service.sh
 ```
 
@@ -148,7 +148,7 @@ To stop the always-on runtime and run manually:
 
 ```bash
 sudo systemctl stop posture-runtime.service
-cd /home/logan/jetson-runtime
+cd /home/logan/jetson-lab/projects/posture
 ./jetson/services/run_posture_runtime.sh
 ```
 
@@ -156,7 +156,7 @@ To run the dashboard manually:
 
 ```bash
 sudo systemctl stop posture-dashboard.service
-cd /home/logan/jetson-runtime
+cd /home/logan/jetson-lab/projects/posture
 ./jetson/services/run_posture_dashboard.sh
 ```
 

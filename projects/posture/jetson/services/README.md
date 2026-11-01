@@ -3,7 +3,7 @@
 Install the service on the Jetson:
 
 ```bash
-cd /home/logan/jetson-runtime
+cd /home/logan/jetson-lab/projects/posture
 ./jetson/services/install_posture_runtime_service.sh
 sudo systemctl enable --now posture-runtime.service
 ```
@@ -26,7 +26,7 @@ Developer flow:
 
 ```bash
 sudo systemctl stop posture-runtime.service
-cd /home/logan/jetson-runtime
+cd /home/logan/jetson-lab/projects/posture
 ./jetson/services/run_posture_runtime.sh
 ```
 
@@ -42,7 +42,7 @@ sudo systemctl status posture-runtime.service
 Install the dashboard service on the Jetson:
 
 ```bash
-cd /home/logan/jetson-runtime
+cd /home/logan/jetson-lab/projects/posture
 ./jetson/services/install_posture_dashboard_service.sh
 sudo systemctl enable --now posture-dashboard.service
 ```

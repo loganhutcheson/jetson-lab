@@ -5,10 +5,10 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=logan
-WorkingDirectory=/home/logan/jetson-runtime
+User=@SERVICE_USER@
+WorkingDirectory=@PROJECT_ROOT@
 EnvironmentFile=-/etc/default/posture-runtime
-ExecStart=/home/logan/jetson-runtime/jetson/services/run_posture_runtime.sh
+ExecStart=@PROJECT_ROOT@/jetson/services/run_posture_runtime.sh
 Restart=always
 RestartSec=5
 KillSignal=SIGTERM

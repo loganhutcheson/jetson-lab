@@ -13,7 +13,22 @@ if [[ ! -f "${SERVICE_SRC}" ]]; then
   exit 1
 fi
 
-sudo install -m 0644 "${SERVICE_SRC}" "${SERVICE_DST}"
+service_user="${SUDO_USER:-${USER:-$(id -un)}}"
+unit_tmp="$(mktemp)"
+trap 'rm -f "$unit_tmp"' EXIT
+python3 - "$SERVICE_SRC" "$unit_tmp" "$REPO_ROOT" "$service_user" <<'PYUNIT'
+from pathlib import Path
+import sys
+source, target, root, user = sys.argv[1:]
+# Escape systemd specifiers and quote paths (including checkout names with spaces).
+root = root.replace('%', '%%').replace('\\', '\\\\').replace('"', '\\"')
+text = Path(source).read_text().replace('@SERVICE_USER@', user)
+text = text.replace('WorkingDirectory=@PROJECT_ROOT@', f'WorkingDirectory="{root}"')
+text = text.replace('ExecStart=@PROJECT_ROOT@/jetson/services/', f'ExecStart="{root}/jetson/services/')
+text = '\n'.join(line + '"' if line.startswith('ExecStart=') else line for line in text.splitlines()) + '\n'
+Path(target).write_text(text)
+PYUNIT
+sudo install -m 0644 "${unit_tmp}" "${SERVICE_DST}"
 if [[ ! -f "${ENV_DST}" ]]; then
   sudo install -m 0644 "${ENV_EXAMPLE}" "${ENV_DST}"
 fi
