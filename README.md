@@ -1,10 +1,11 @@
 # jetson lab
 
-small hardware and Linux projects on Jetson Orin Nano. paused for now; start with the [return checklist](docs/pick-up-here.md).
+small hardware and Linux projects on Jetson Orin Nano. the Panini clock is active; posture is paused. start with the [return checklist](docs/pick-up-here.md) for hardware experiments.
 
 | folder | what's here |
 | --- | --- |
 | [projects/posture](projects/posture/) | cameras, sensors, pose inference, and a local dashboard |
+| [projects/panini-clock](projects/panini-clock/) | Panini case OLED clock and boot service |
 | [experiments](experiments/) | early C++ messaging prototypes |
 | [docs](docs/) | lab layout and next steps |
 
