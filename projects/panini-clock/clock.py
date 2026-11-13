@@ -4,7 +4,8 @@ import datetime
 import fcntl
 import os
 import signal
-import time
+import subprocess
+import threading
 
 
 def clock_labels(now):
@@ -13,9 +14,30 @@ def clock_labels(now):
             now.strftime('%p %Z') + ' JETSON')
 
 
+def time_is_synced():
+    """Read the existing NTP provider's synchronization state without changing it."""
+    try:
+        result = subprocess.run(
+            ['/usr/bin/timedatectl', 'show', '--property=NTPSynchronized', '--value'],
+            capture_output=True, text=True, timeout=5, check=False)
+        return result.returncode == 0 and result.stdout.strip() == 'yes'
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+
+
+def wait_for_time():
+    # Type=simple keeps the rest of boot independent of this clock. If the
+    # network is unavailable, leave the display off instead of showing 1969.
+    pause = threading.Event()
+    while not time_is_synced():
+        pause.wait(1)
+
+
 def main():
     from PIL import Image, ImageDraw, ImageFont
 
+    wait_for_time()
+    pause = threading.Event()
     fd = os.open('/dev/i2c-7', os.O_RDWR)
     fcntl.ioctl(fd, 0x0703, 0x3c)
 
@@ -58,7 +80,7 @@ def main():
             centered(draw, 15 + offset, time_label, large)
             centered(draw, 52 + offset, footer, small)
             show(image)
-            time.sleep(1)
+            pause.wait(1)
     finally:
         command(0xae)
         os.close(fd)

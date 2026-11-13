@@ -6,7 +6,12 @@ Uses `/dev/i2c-7`, address `0x3c`, matching the existing working case display.
 Shows the local date, a **12-hour clock**, and an AM/PM + timezone footer.
 The image shifts one pixel every 15 seconds; brightness and one-second refresh
 match the original installed clock. The system timezone and time synchronization
-remain owned by the operating system.
+remain owned by the operating system. At startup the clock waits until
+`timedatectl` reports `NTPSynchronized=yes` before initializing the display.
+Without network time it stays off rather than showing the cold-boot 1969 time.
+The service uses systemd's default `Type=simple`, so this wait does not delay the
+rest of boot. The existing NTP service must be enabled and have internet access.
+Each render uses a monotonic event wait, independent of wall-clock corrections.
 
 ## install
 
